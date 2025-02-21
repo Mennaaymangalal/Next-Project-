@@ -8,18 +8,22 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import *  as  Yup from "yup" 
+import cookie from "js-cookie"
+import { useDispatch } from 'react-redux';
+import { SetUserIsLoggedIn } from '@/Redux/AuthSliceIniteState/AuthSliceIniteState';
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [errMessage , setErrMessage] = useState("");
-  
+  const [errMessage , setErrMessage] = useState("");  
   const [isLoading , setIsLoading] = useState(false)
+
+  const dispatch =  useDispatch()
 
  const router = useRouter()
  
  const initialValues: LoginData  = {
  
-  email:"menna@gmail.com",
+  email:"menna123@gmail.com",
   password:"Menna12@",
  
   }
@@ -29,7 +33,9 @@ export default function Login() {
    setIsLoading(true)
     await axios.post("https://linked-posts.routemisr.com/users/signin" , values)
    .then(({data})=> {
-    if(data.message == "success"){          
+    if(data.message == "success"){     
+      cookie.set("token" , data.token) 
+      dispatch(SetUserIsLoggedIn(true))
       router.push("/")
       console.log(data)   
     }

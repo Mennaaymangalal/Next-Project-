@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 const pages = ['Home', 'Posts'];
 const settings = {
@@ -24,7 +25,8 @@ const settings = {
  export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const [isUserLogedIn , setIsUserLogedIn] =React.useState(false)
+  const { isLoggedIn } = useSelector((state : any )=>state.auth)
+  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -65,7 +67,8 @@ const settings = {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
+          { isLoggedIn &&
+              <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -75,6 +78,7 @@ const settings = {
             >
               <MenuIcon />
             </IconButton>
+          }
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -91,7 +95,7 @@ const settings = {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
+              {isLoggedIn && pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
@@ -118,7 +122,7 @@ const settings = {
             Circle
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {isLoggedIn && pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -150,7 +154,7 @@ const settings = {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {isUserLogedIn ? settings.LoggedIn.map((setting) => (
+              {isLoggedIn ? settings.LoggedIn.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                  <Link style={{textDecoration: 'none' , color:'inherit'}} href={"/" + setting.toLowerCase()}>
                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
