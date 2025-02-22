@@ -30,7 +30,7 @@ export default function Posts() {
       <Stack spacing={3} marginTop={3}>
       {
          posts.map((post , index)=>{
-          return <Post key={index} post={post}/>
+          return <Post key={index} post={post} commentLimit={1}/>
          })
       }
       </Stack> 

@@ -19,7 +19,7 @@ import Link from 'next/link';
 
 
 
-export default function Post({ post } : {post : PostI}){
+export default function Post({ post , commentLimit } : {post : PostI , commentLimit?: number }){
 
 
 
@@ -84,7 +84,12 @@ export default function Post({ post } : {post : PostI}){
         
       </CardActions>     
 
-      <Comment comment={post.comments[0]}/>
+      {
+        post.comments.slice(0,commentLimit).map((comment , index)=>{
+          return <Comment key={index} comment={comment}/>
+        })
+      }
+     
              
 
     </Card>

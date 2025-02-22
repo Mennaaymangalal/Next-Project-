@@ -27,7 +27,7 @@ export default function PostDetails(props:any) {
   return (
     <>
     <Container maxWidth={'md'}>
-      { post ? < Post post={post}/> : <Loading/>
+      { post ? < Post post={post} /> : <Loading/>
       }
     </Container>     
     </>
