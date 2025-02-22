@@ -11,7 +11,7 @@ const CreatePost = () => {
             fullWidth
             label="What's on your mind?"
             multiline
-            rows={2}
+            rows={1}
             variant="outlined"
             sx={{ mb: 2 }}
           />          
