@@ -1,4 +1,5 @@
 "use client"
+import CreatePost from '@/app/_components/CreaatePost/CreaatePost'
 import Post from '@/app/_components/Post/Post'
 import Loading from '@/app/Loading/loading'
 import { PostI } from '@/Interfaces/Post'
@@ -27,6 +28,7 @@ export default function Posts() {
       <Typography variant='h4'>
       Posts  
       </Typography>    
+      < CreatePost/>
       <Stack spacing={3} marginTop={3}>
       {
          posts.map((post , index)=>{
