@@ -52,7 +52,10 @@ const initialState : PostsSliceInitStat = {
   state.postIsLoading = false
 })
 builder.addCase(getSinglePost.pending ,(state , action)=>{
-state.postIsLoading = true
+    // state.postIsLoading = true
+    if(state.post?._id != action.meta.arg){
+      state.postIsLoading = true
+    }
 })
 builder.addCase(getSinglePost.rejected ,(state , action)=>{
 state.postIsLoading = false
