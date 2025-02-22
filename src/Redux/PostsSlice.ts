@@ -14,8 +14,20 @@ export const getAllPosts = createAsyncThunk("Posts/getAllPosts", async ()=>{
     return data.posts
 })
 
+export const getSinglePost = createAsyncThunk("Posts/getSinglePost", async (postId : string)=>{
+  const { data } = await axios.get("https://linked-posts.routemisr.com/posts/" + postId , {
+      headers:{
+          token: Cookies.get("token")
+      }
+  })
+  return data.post
+})
+
 const initialState : PostsSliceInitStat = {
-  posts: [],
+  posts: [],  
+  postsIsLoading: true ,
+  post: null,
+  postIsLoading : true
 };
 
   const postsSlice = createSlice({
@@ -25,7 +37,28 @@ const initialState : PostsSliceInitStat = {
   extraReducers: (builder) => {
      builder.addCase(getAllPosts.fulfilled ,(state , action)=>{
         state.posts = action.payload ;
+        state.postsIsLoading = false
      })
+     builder.addCase(getAllPosts.pending ,(state , action)=>{
+      state.postsIsLoading = true
+   })
+   builder.addCase(getAllPosts.rejected ,(state , action)=>{
+    state.postsIsLoading = false
+ })
+
+
+ builder.addCase(getSinglePost.fulfilled ,(state , action)=>{
+  state.post = action.payload ;
+  state.postIsLoading = false
+})
+builder.addCase(getSinglePost.pending ,(state , action)=>{
+state.postIsLoading = true
+})
+builder.addCase(getSinglePost.rejected ,(state , action)=>{
+state.postIsLoading = false
+})
+
+
   },
 });
 

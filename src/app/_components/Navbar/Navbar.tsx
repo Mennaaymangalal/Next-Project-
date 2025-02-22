@@ -17,6 +17,7 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import cookie from "js-cookie" 
 import { SetUserIsLoggedIn } from '@/Redux/AuthSliceIniteState/AuthSliceIniteState';
 import { useRouter } from 'next/navigation';
+import { RootState } from "@/Redux/Store/store";
 
 
 const pages = [
@@ -32,7 +33,7 @@ const settings = {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const { isLoggedIn } = useSelector((state : any )=>state.auth)
+  const { isLoggedIn } = useSelector((state : RootState )=>state.auth)
   
   const [isMounted, setIsMounted] = React.useState(false);
 

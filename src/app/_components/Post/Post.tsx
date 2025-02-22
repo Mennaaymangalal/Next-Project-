@@ -14,10 +14,14 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PostI } from '@/Interfaces/Post';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Box } from '@mui/material';
+import Comment from '../Comment/Comment';
+import Link from 'next/link';
 
 
 
 export default function Post({ post } : {post : PostI}){
+
+
 
   return (
     <Card>
@@ -64,9 +68,13 @@ export default function Post({ post } : {post : PostI}){
         </IconButton>
    
      <Box sx={{display:'flex' , alignItems:'center'}}>       
-     <IconButton aria-label="comment">
+    
+    <Link href={"/posts/" + post._id}>
+    <IconButton aria-label="comment">
           <ChatBubbleOutlineIcon />
         </IconButton>
+    </Link>
+
      <Typography>{post.comments.length}</Typography>
      </Box>
 
@@ -76,34 +84,8 @@ export default function Post({ post } : {post : PostI}){
         
       </CardActions>     
 
-      <Box sx={{background:"#eee" , borderTop:"1px solid #ccc"}}>
-      <CardHeader
-        avatar={
-          <Avatar
-           src={post.comments[0].commentCreator.photo}
-            alt={post.comments[0].commentCreator.name}
-            sx={{ bgcolor: red[500] }} 
-            aria-label="recipe">           
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={
-            <Box sx={{display:'flex' , justifyContent:'space-between' , alignItems:'center'}}>
-                <Typography sx={{fontSize:'14px' , fontWeight:'500'}}>{post.comments[0].commentCreator.name}</Typography>
-                <Typography sx={{fontSize:'14px' , fontWeight:'500'}}>{post.comments[0].createdAt.split("T")[0]}</Typography>
-            </Box>
-        }
-        subheader={post.comments[0].content}  
-        slotProps={{subheader:{
-            fontSize:'18px',
-            fontWeight:'400'
-        }}}     
-      />     
-      </Box>
+      <Comment comment={post.comments[0]}/>
+             
 
     </Card>
   );

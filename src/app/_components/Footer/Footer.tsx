@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Container, Grid, Typography, IconButton, Link } from "@mui/material";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 export default function Footer(){
   return (
@@ -17,9 +18,12 @@ export default function Footer(){
         <Grid container spacing={3} justifyContent="center">
           {/* Company Info */}
           <Grid item xs={12} sm={4}>
+          <Box sx={{display:'flex' , alignItems:'center'}}>
+          <WorkspacesIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 , fontSize:'20px'}} />
             <Typography variant="h6" fontWeight="bold">
               Circle
             </Typography>
+          </Box>
             <Typography variant="body2" sx={{ mt: 1 }}>
               Building amazing web experiences with passion.
             </Typography>

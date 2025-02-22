@@ -2,5 +2,8 @@ import { PostI } from "./Post";
 
 
 export interface PostsSliceInitStat{
-    posts: PostI[]
+    posts: PostI[] ;
+    postsIsLoading: boolean ;
+    post: PostI | null ;
+    postIsLoading : boolean ;
 } 
