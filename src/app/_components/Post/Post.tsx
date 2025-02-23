@@ -21,6 +21,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getAllPosts, getSinglePost } from '@/Redux/PostsSlice';
 import SendIcon from '@mui/icons-material/Send';
+import { useRouter } from 'next/navigation';
+
 
 
 
@@ -28,10 +30,11 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
   const [isLoading , setIsLoading] = React.useState(false)
   const [content , setContent] = React.useState("")
   const [isLoadingBtn , setIsLoadingBtn] = React.useState(false)
-
+  const {push} = useRouter()
 
  const {user}  = useSelector((state:RootState)=> state.auth)
  const dispatch = useDispatch<AppDispatch>() 
+ 
 
 
 
@@ -44,7 +47,10 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
      )
      console.log(data)
      setIsLoading(false)
-     dispatch(getAllPosts())
+     dispatch(getAllPosts());
+     if(commentLimit == undefined){
+        push("/posts")
+     }
   } 
  
   async function CreateComment(){
