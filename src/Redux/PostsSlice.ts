@@ -6,12 +6,12 @@ import Cookies from "js-cookie";
 
 
 export const getAllPosts = createAsyncThunk("Posts/getAllPosts", async ()=>{
-    const { data } = await axios.get("https://linked-posts.routemisr.com/posts?limit=50", {
+    const { data } = await axios.get("https://linked-posts.routemisr.com/posts?page=75", {
         headers:{
             token: Cookies.get("token")
         }
     })
-    return data.posts
+    return data.posts.reverse()
 })
 
 export const getSinglePost = createAsyncThunk("Posts/getSinglePost", async (postId : string)=>{

@@ -5,7 +5,7 @@ import { Container } from '@mui/material';
 
 export default function Loading() {
   return (
-   <Container maxWidth={'xs'} sx={{paddingTop: '20px' , paddingBottom:'20px'}}>
+   <Container maxWidth={'xs'} sx={{paddingTop: '45px' , paddingBottom:'45px'}}>
      <Stack spacing={1}>
       {/* For variant="text", adjust the height via font-size */}
       <Skeleton variant="text" sx={{ fontSize: '1rem' }} />

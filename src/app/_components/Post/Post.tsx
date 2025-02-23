@@ -53,12 +53,14 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
 
 
     {    post.image &&
-          <CardMedia
+          <Link href={"/posts/" + post._id}>
+             <CardMedia
           component="img"
-          height="250"
+          height={ commentLimit == undefined ? "auto" : "250" }
           image={post.image}
           alt={post.body}
         />    
+        </Link>
     }
 
 
