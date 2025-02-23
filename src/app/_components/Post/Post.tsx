@@ -19,13 +19,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/Redux/Store/store';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { getAllPosts } from '@/Redux/PostsSlice';
+import { getAllPosts, getSinglePost } from '@/Redux/PostsSlice';
 import SendIcon from '@mui/icons-material/Send';
 
 
 
 export default function Post({ post , commentLimit } : {post : PostI , commentLimit?: number }){
   const [isLoading , setIsLoading] = React.useState(false)
+  const [content , setContent] = React.useState("")
+  const [isLoadingBtn , setIsLoadingBtn] = React.useState(false)
+
 
  const {user}  = useSelector((state:RootState)=> state.auth)
  const dispatch = useDispatch<AppDispatch>() 
@@ -43,6 +46,24 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
      setIsLoading(false)
      dispatch(getAllPosts())
   } 
+ 
+  async function CreateComment(){
+    setIsLoadingBtn(true)
+   const {data} = await axios.post("https://linked-posts.routemisr.com/comments",
+   {
+      content,
+      post: post._id
+   },
+  {
+    headers:{
+      token: Cookies.get("token")
+    }
+  })
+  console.log(data)
+  setIsLoadingBtn(false)
+  dispatch(getAllPosts()).then(()=> setContent(""))
+  dispatch(getSinglePost(post._id)).then(()=> setContent(""))  
+  }
 
   return (
     <Card>
@@ -114,12 +135,24 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
       }  
 
       <Box sx={{display:'flex' , paddingTop:'15px'}}>
-      <TextField  type='text' style={{padding:'0 5px'}} fullWidth placeholder='Write a Comment....' variant="standard" />
-      <Button size="large" loading={isLoading} type='submit' variant="text"><SendIcon sx={{paddingRight:'15px'}}/></Button>
-      
-      </Box>            
-  
-    
+      <TextField
+      value={content}
+      onChange={(e)=>setContent(e.target.value)}
+      type='text'
+      style={{padding:'0 5px'}}
+      fullWidth
+      placeholder='Write a Comment....'
+      variant="standard" />
+      <Button   
+      disabled={content.trim() ==  "" }
+      loading={isLoadingBtn}
+      onClick={CreateComment}  
+       size="large"
+        type='submit'
+        variant="text">
+        <SendIcon sx={{paddingRight:'15px'}}/>
+        </Button>      
+      </Box>               
     </Card>
   );
 }
