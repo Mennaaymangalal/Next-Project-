@@ -7,16 +7,19 @@ import { Container } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-export default function PostDetails(props:any) {
+interface PostDetailsProps {
+  params: Promise<{ id: string }>;
+}
+export default function PostDetails({ params }: PostDetailsProps) {
   const dispatch = useDispatch<AppDispatch>()
 
   const { post, postIsLoading } = useSelector((state: RootState) => state.posts);
 
-  useEffect(()=>{
-    props.params.then(({ id }:{ id : string })=>{
-      dispatch(getSinglePost(id))
-    })
-  },[])
+  useEffect(() => {
+    params.then(({ id }) => {
+      dispatch(getSinglePost(id));
+    });
+  }, []);
 
   console.log(post)
 
