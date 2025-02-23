@@ -23,8 +23,8 @@ export default function Login() {
  
  const initialValues: LoginData  = {
  
-  email:"menna123@gmail.com",
-  password:"Menna12@",
+  email:"",
+  password:"",
  
   }
   

@@ -17,12 +17,12 @@ export default function Register() {
  const router = useRouter()
 
  const initialValues : RegisterData = {
-  name: "menna",
-  email:"menna@gmail.com",
-  password:"Menna12@",
-  rePassword:"Menna12@",
+  name: "",
+  email:"",
+  password:"",
+  rePassword:"",
   dateOfBirth:"",
-  gender:"female"
+  gender:""
   }
   
 
