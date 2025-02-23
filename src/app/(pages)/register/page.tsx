@@ -22,7 +22,7 @@ export default function Register() {
   password:"",
   rePassword:"",
   dateOfBirth:"",
-  gender:""
+  gender:"female"
   }
   
 
