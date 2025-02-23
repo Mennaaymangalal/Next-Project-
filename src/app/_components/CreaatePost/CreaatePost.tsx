@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import {
   Container,
   TextField,
@@ -29,23 +30,24 @@ const HiddenInput = styled('input')({
 });
 
 export default function CreatePost() {
-  const [image, setimage] = useState(null);
-  const [imageSrc, setImageSrc] = useState("");
-  const [body , setBody]  = useState("")  
-  const [sizeError , setSizeError]  = useState("")
-  const [fileError , setFileError]  = useState("")
-  const dispatch = useDispatch<AppDispatch>()  
+  const [image, setImage] = useState<File | null>(null);
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [body, setBody] = useState<string>('');
+  const [sizeError, setSizeError] = useState<string>('');
+  const [fileError, setFileError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [isLoading , setIsLoading]  = useState(false)
+  const dispatch = useDispatch<AppDispatch>();
 
-  
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
 
- 
- 
+    // Reset errors when a new file is chosen.
+    setFileError('');
+    setSizeError('');
 
-  function handleFileChange (e:any){
-
-    const fileType = e.target.files[0].type; // e.g., "image/png"
+    const fileType = file.type; // e.g., "image/png"
     const allowedFileTypesRegex = /^image\/(jpeg|png|jpg)$/;
     
     if (!allowedFileTypesRegex.test(fileType)) {
@@ -53,59 +55,55 @@ export default function CreatePost() {
       return;
     }
     
-
-    const imgSize = e.target.files[0].size /1024 /1024
-    console.log(imgSize)
-
-    if(imgSize > 1 ){
-        setSizeError("Can't Upload, Image Size is too Large")
-        handleRemoveFile()
-        return
+    const imgSize = file.size / 1024 / 1024; // Size in MB
+    if (imgSize > 1) {
+      setSizeError("Can't Upload, Image Size is too Large");
+      handleRemoveFile();
+      return;
     }
 
-    if (e.target.files[0]) {
-        setimage(e.target.files[0]);      
-    }
-   const imgsrc = URL.createObjectURL(e.target.files[0]);
-    setImageSrc(imgsrc);
+    setImage(file);
+    const imgSrc = URL.createObjectURL(file);
+    setImageSrc(imgSrc);
   };
 
-  
- 
-  async function addPost(e:any){    
-    e.preventDefault()    
-    const formData = new FormData(); 
-
-    if(body.trim() != "" ){
-        formData.append("body" , body)       
-    }
-    if(image != null){
-        formData.append("image", image)
-       }
-       setIsLoading(true)
-       const data = await axios.post("https://linked-posts.routemisr.com/posts" , formData ,{
-        headers: {
-            token: Cookies.get("token")
-        }
-       })       
-        dispatch(getAllPosts()).then(()=>{
-            setIsLoading(false)    
-            setBody("")
-            handleRemoveFile()
-        })    
-          
-  } 
- 
-
   const handleRemoveFile = () => {
-    setimage(null);
-    setImageSrc("")
+    setImage(null);
+    setImageSrc('');
+  };
+
+  const addPost = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    if (body.trim() !== "") {
+      formData.append("body", body);
+    }
+    if (image !== null) {
+      formData.append("image", image);
+    }
+    setIsLoading(true);
+    try {
+      await axios.post("https://linked-posts.routemisr.com/posts", formData, {
+        headers: {
+          token: Cookies.get("token") || "",
+        },
+      });
+      await dispatch(getAllPosts());
+      setBody("");
+      handleRemoveFile();
+    } catch (error) {
+      console.error("Error adding post:", error);
+      // Optionally, set an error state here to notify the user.
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Container maxWidth="md">
       <Box sx={{ mt: 4 }}>
-        <Box onSubmit={addPost} component="form" sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={addPost} sx={{ mt: 2 }}>
           <TextField
             fullWidth
             label="What's on your mind?"
@@ -114,7 +112,7 @@ export default function CreatePost() {
             variant="outlined"
             sx={{ mb: 1 }}
             value={body}
-            onChange={(e)=> setBody(e.target.value)}
+            onChange={(e) => setBody(e.target.value)}
           />
 
           {imageSrc && (
@@ -131,8 +129,8 @@ export default function CreatePost() {
                 src={imageSrc}
                 alt="Preview"
                 style={{
-                display: 'block',
-                width: '100%',
+                  display: 'block',
+                  width: '100%',
                 }}
               />
               <IconButton
@@ -160,19 +158,21 @@ export default function CreatePost() {
             <HiddenInput
               type="file"
               accept="image/*"
-              onChange={handleFileChange}              
-            />           
+              onChange={handleFileChange}
+            />
           </Button>
-          { sizeError &&
-                <p style={{color:"red"}}>{sizeError}</p>
-          }
-          { fileError &&
-               <p style={{color:"red"}}>{fileError}</p>
-          }
+          {sizeError && <p style={{ color: "red" }}>{sizeError}</p>}
+          {fileError && <p style={{ color: "red" }}>{fileError}</p>}
 
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
-            <Button loading={isLoading} disabled={body.trim() == "" && image == null} type='submit' variant="contained" color="primary" endIcon={<SendIcon/>}>
-              SEND
+            <Button
+              disabled={body.trim() === "" && image === null}
+              type="submit"
+              variant="contained"
+              color="primary"
+              endIcon={<SendIcon />}
+            >
+              {isLoading ? "Sending..." : "SEND"}
             </Button>
           </Box>
         </Box>
@@ -180,6 +180,3 @@ export default function CreatePost() {
     </Container>
   );
 }
-
-
-

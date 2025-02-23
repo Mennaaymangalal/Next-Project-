@@ -1,5 +1,4 @@
 "use client"
-import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./_components/Navbar/Navbar";
 import Footer from "./_components/Footer/Footer";   
@@ -11,6 +10,7 @@ import theme from '../theme';
 import { Box } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "@/Redux/Store/store";
+import Layout from "./_components/Layout/Layout";
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -31,18 +31,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head title="Circle">
-       
+      <head >
+       <title>Circle</title>
       </head>
       <body className={roboto.variable} style={{margin:0}}>
         <Provider store={store}>
         <AppRouterCacheProvider>
       <ThemeProvider theme={theme}>
-      <Navbar/>
-     <Box padding={5}>
+       <Layout>         
+        <Navbar/>
+        <Box padding={5}>
         {children}
-     </Box>      
-      <Footer/>
+        </Box>      
+        <Footer/>          
+      </Layout>
+      
       </ThemeProvider>
       </AppRouterCacheProvider>
        

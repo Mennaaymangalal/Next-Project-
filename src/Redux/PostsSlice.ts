@@ -39,10 +39,10 @@ const initialState : PostsSliceInitStat = {
         state.posts = action.payload ;
         state.postsIsLoading = false
      })
-     builder.addCase(getAllPosts.pending ,(state , action)=>{
+     builder.addCase(getAllPosts.pending ,(state )=>{
       state.postsIsLoading = true
    })
-   builder.addCase(getAllPosts.rejected ,(state , action)=>{
+   builder.addCase(getAllPosts.rejected ,(state )=>{
     state.postsIsLoading = false
  })
 
@@ -57,10 +57,9 @@ builder.addCase(getSinglePost.pending ,(state , action)=>{
       state.postIsLoading = true
     }
 })
-builder.addCase(getSinglePost.rejected ,(state , action)=>{
+builder.addCase(getSinglePost.rejected ,(state)=>{
 state.postIsLoading = false
 })
-
 
   },
 });

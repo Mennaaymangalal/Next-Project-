@@ -5,23 +5,43 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { PostI } from '@/Interfaces/Post';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Comment from '../Comment/Comment';
 import Link from 'next/link';
+import ClearIcon from '@mui/icons-material/Clear';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/Redux/Store/store';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { getAllPosts } from '@/Redux/PostsSlice';
 
 
 
 export default function Post({ post , commentLimit } : {post : PostI , commentLimit?: number }){
+  const [isLoading , setIsLoading] = React.useState(false)
+
+ const {user}  = useSelector((state:RootState)=> state.auth)
+ const dispatch = useDispatch<AppDispatch>() 
 
 
+
+  async function deletePost(){
+    setIsLoading(true)
+     const {data} = await axios.delete("https://linked-posts.routemisr.com/posts/" + post._id,
+     { headers:{
+        token: Cookies.get("token")
+      }}     
+     )
+     console.log(data)
+     setIsLoading(false)
+     dispatch(getAllPosts())
+  } 
 
   return (
     <Card>
@@ -35,8 +55,9 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
+          user?._id == post.user._id &&
+          <IconButton loading={isLoading} onClick={deletePost} aria-label="settings">
+            <ClearIcon />
           </IconButton>
         }
         title={post.user.name}
