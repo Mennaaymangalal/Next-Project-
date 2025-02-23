@@ -112,7 +112,7 @@ export default function Login() {
         </FormControl>
              
       
-    <Button size="large" loading={isLoading} type='submit' variant="outlined">Primary</Button>
+    <Button size="large" loading={isLoading} type='submit' variant="outlined">Login</Button>
     {errMessage && <p style={{color:'red'}}>{errMessage} </p>}
        </Stack>
         </Box>    

@@ -165,7 +165,7 @@ export default function Register() {
        <FormHelperText>{errors.gender}</FormHelperText>
       )}
     </FormControl>
-    <Button size="large" loading={isLoading} type='submit' variant="outlined">Primary</Button>
+    <Button size="large" loading={isLoading} type='submit' variant="outlined">Register</Button>
     {errMessage && <p style={{color:'red'}}>{errMessage} </p>}
        </Stack>
         </Box>    

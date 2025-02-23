@@ -11,7 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { PostI } from '@/Interfaces/Post';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import { Box, IconButton } from '@mui/material';
+import { Box, Button, IconButton, TextField } from '@mui/material';
 import Comment from '../Comment/Comment';
 import Link from 'next/link';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -20,6 +20,7 @@ import { AppDispatch, RootState } from '@/Redux/Store/store';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getAllPosts } from '@/Redux/PostsSlice';
+import SendIcon from '@mui/icons-material/Send';
 
 
 
@@ -105,16 +106,20 @@ export default function Post({ post , commentLimit } : {post : PostI , commentLi
           <ShareIcon />
         </IconButton>
         
-      </CardActions>     
-
+      </CardActions>
       {
         post.comments.slice(0,commentLimit).map((comment , index)=>{
           return <Comment key={index} comment={comment}/>
         })
-      }
-     
-             
+      }  
 
+      <Box sx={{display:'flex' , paddingTop:'15px'}}>
+      <TextField  type='text' style={{padding:'0 5px'}} fullWidth placeholder='Write a Comment....' variant="standard" />
+      <Button size="large" loading={isLoading} type='submit' variant="text"><SendIcon sx={{paddingRight:'15px'}}/></Button>
+      
+      </Box>            
+  
+    
     </Card>
   );
 }
