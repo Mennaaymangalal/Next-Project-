@@ -35,7 +35,7 @@ export default function Comment({comment}: {comment : CommentI}) {
     setEditIsLoading(true)
     const { data } = await axios.put("https://linked-posts.routemisr.com/comments/" + comment._id ,
       {
-        content,
+        content
       },
       {
         headers:{
@@ -43,6 +43,7 @@ export default function Comment({comment}: {comment : CommentI}) {
         }
       })
     console.log(data)
+    setInUpdateMode(false)
     setEditIsLoading(false)
     dispatch(getAllPosts())
     dispatch(getSinglePost(comment._id))
