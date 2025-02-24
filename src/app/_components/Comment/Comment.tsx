@@ -8,7 +8,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getAllPosts, getSinglePost } from '@/Redux/PostsSlice';
 import EditIcon from '@mui/icons-material/Edit';
-import SendIcon from '@mui/icons-material/Send';
 
 export default function Comment({comment}: {comment : CommentI}) {
   const [isLoading , setIsLoading] = React.useState(false)
@@ -94,7 +93,7 @@ export default function Comment({comment}: {comment : CommentI}) {
            size="large"
            type='submit'
            variant="text">
-          <SendIcon sx={{paddingRight:'15px'}}/>
+          Update
         </Button>   
           </Box>
         </>
