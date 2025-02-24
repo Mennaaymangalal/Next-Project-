@@ -161,8 +161,8 @@ export default function CreatePost() {
               onChange={handleFileChange}
             />
           </Button>
-          {sizeError && <p style={{ color: "red" }}>{sizeError}</p>}
-          {fileError && <p style={{ color: "red" }}>{fileError}</p>}
+          {sizeError && <p style={{ fontFamily:'Roboto', color: "red" }}>{sizeError}</p>}
+          {fileError && <p style={{ fontFamily:'Roboto', color: "red" }}>{fileError}</p>}
 
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'end' }}>
             <Button

@@ -3,7 +3,6 @@ import "./globals.css";
 import Navbar from "./_components/Navbar/Navbar";
 import Footer from "./_components/Footer/Footer";   
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'; 
-
 import { Roboto } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../theme';
@@ -18,11 +17,6 @@ const roboto = Roboto({
   display: 'swap',
   variable: '--font-roboto',
 });
-
-
-
-
-
 
 export default function RootLayout({
   children,

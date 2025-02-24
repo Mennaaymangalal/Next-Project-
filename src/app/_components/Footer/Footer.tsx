@@ -3,9 +3,10 @@ import { Box, Container, Grid, Typography, IconButton, Link } from "@mui/materia
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
+
 export default function Footer() {
   return (
-    <Box
+    <Box style={{fontFamily:'Roboto'}}
       component="footer"
       sx={{
         backgroundColor: "primary.dark",
