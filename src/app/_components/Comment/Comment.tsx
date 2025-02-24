@@ -1,4 +1,4 @@
-import { Avatar, Box, CardHeader, IconButton, Typography } from '@mui/material'
+import { Avatar, Box, Button, CardHeader, IconButton, TextField, Typography } from '@mui/material'
 import React from 'react'
 import ClearIcon from '@mui/icons-material/Clear';
 import { CommentI } from '@/Interfaces/Comment';
@@ -7,9 +7,15 @@ import { AppDispatch, RootState } from '@/Redux/Store/store';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getAllPosts, getSinglePost } from '@/Redux/PostsSlice';
+import EditIcon from '@mui/icons-material/Edit';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function Comment({comment}: {comment : CommentI}) {
   const [isLoading , setIsLoading] = React.useState(false)
+  const [inUpdateMode , setInUpdateMode] = React.useState(false)
+  const [content , setContent] = React.useState(comment.content)
+  const [editisLoading , setEditIsLoading] = React.useState(false)
+
   const dispatch = useDispatch<AppDispatch>()
 
   const {user} = useSelector((state:RootState)=> state.auth)
@@ -26,6 +32,23 @@ export default function Comment({comment}: {comment : CommentI}) {
 
   }
 
+  async function editComment(){
+    setEditIsLoading(true)
+    const { data } = await axios.put("https://linked-posts.routemisr.com/comments/" + comment._id ,
+      {
+        content,
+      },
+      {
+        headers:{
+          token: Cookies.get("token")
+        }
+      })
+    console.log(data)
+    setEditIsLoading(false)
+    dispatch(getAllPosts())
+    dispatch(getSinglePost(comment._id))
+  }
+
   return (
     <Box sx={{background:"#eee" , borderTop:"1px solid #ccc"}}>
     <CardHeader
@@ -39,9 +62,14 @@ export default function Comment({comment}: {comment : CommentI}) {
       }
       action={
         user?._id == comment.commentCreator._id &&
+         <>
+           <IconButton onClick={()=>setInUpdateMode(true)} aria-label="settings">
+          <EditIcon/>
+          </IconButton>  
           <IconButton loading={isLoading} onClick={deleteComment} aria-label="settings">
             <ClearIcon />
-          </IconButton>
+          </IconButton>           
+         </>    
         }
       
       title={
@@ -50,7 +78,28 @@ export default function Comment({comment}: {comment : CommentI}) {
               <Typography sx={{fontSize:'14px' , fontWeight:'500'}}>{comment.createdAt.split("T")[0]}</Typography>
           </Box>
       }
-      subheader={comment.content}  
+      subheader={ inUpdateMode ? 
+        <>
+          <Box sx={{display:'flex'}}>
+          <TextField  
+            value={content}     
+            onChange={(e)=> setContent(e.target.value)}         
+            type='text'
+            style={{padding:'0 5px'}}
+            fullWidth         
+            variant="standard" />
+          <Button   
+          loading={editisLoading} 
+          onClick={editComment}       
+           size="large"
+           type='submit'
+           variant="text">
+          <SendIcon sx={{paddingRight:'15px'}}/>
+        </Button>   
+          </Box>
+        </>
+             :
+            comment.content}  
       slotProps={{subheader:{
           fontSize:'18px',
           fontWeight:'400'
